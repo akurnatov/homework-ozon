@@ -13,34 +13,42 @@ export default class Calculator extends VueComponent<Props> {
   @Prop()
   private msg!: string
 
+  buffer: string = ''
+  expression: string = ''
+
   render () {
     return (
-      <div onkeypress__delete={ () => this.test }>
+      <div>
         <h1>{ this.msg }</h1>
         <div class={ styles['calculator'] }>
 
-          <input disabled="disabled" value="" class={ [styles['calculator-screen'], styles['calculator-screen__buffer']] }/>
-          <input disabled="disabled" value="0" class={ [styles['calculator-screen'], styles['calculator-screen__output']] }/>
+          <input disabled="disabled"
+                 v-model={ this.buffer }
+                 class={ [styles['calculator-screen'], styles['calculator-screen__buffer']] }/>
+          <input disabled="disabled"
+                 placeholder="0"
+                 v-model={ this.expression }
+                 class={ [styles['calculator-screen'], styles['calculator-screen__output']] }/>
 
           <div class={ styles['calculator-keys'] }>
 
-            <button type="button" value="7">7</button>
-            <button type="button" value="8">8</button>
-            <button type="button" value="9">9</button>
-            <button type="button" class={ [styles['button--brown'], styles['reset']] } value="all-clear">C</button>
+            <button onclick={ this.press }>7</button>
+            <button onclick={ this.press }>8</button>
+            <button onclick={ this.press }>9</button>
+            <button onclick={ this.press } class={ [styles['button--brown'], styles['reset']] } value="all-clear">C</button>
 
-            <button type="button" value="4">4</button>
-            <button type="button" value="5">5</button>
-            <button type="button" value="6">6</button>
-            <button type="button" class={ styles['button--brown'] } value="-">-</button>
+            <button onclick={ this.press }>4</button>
+            <button onclick={ this.press }>5</button>
+            <button onclick={ this.press }>6</button>
+            <button onclick={ this.press } class={ styles['button--brown'] } value="-">-</button>
 
-            <button type="button" value="1">1</button>
-            <button type="button" value="2">2</button>
-            <button type="button" value="3">3</button>
-            <button type="button" class={ styles['button--brown'] } value="+">+</button>
+            <button onclick={ this.press }>1</button>
+            <button onclick={ this.press }>2</button>
+            <button onclick={ this.press }>3</button>
+            <button onclick={ this.press } class={ styles['button--brown'] } value="+">+</button>
 
-            <button type="button" class={ styles['zero'] } value="0">0</button>
-            <button type="button" class={ styles['button--brown'] } value="=">=</button>
+            <button onclick={ this.press } class={ styles['zero'] } value="0">0</button>
+            <button onclick={ this.press } class={ styles['button--brown'] } value="=">=</button>
 
           </div>
         </div>
@@ -50,8 +58,26 @@ export default class Calculator extends VueComponent<Props> {
 
   created () {
     window.addEventListener('keyup', e => {
-      if (e.key === '=') console.log('=')
-      if (e.key === 'c') console.log('c')
+      if (e.key === '=') this.calculate()
+      if (e.key === 'c') this.reset()
     })
+  }
+
+  press (e: object) {
+    let key: string = e.target.innerText
+
+    if (key != '=' && key != 'C') this.expression += key
+    if (key === '=') this.calculate()
+    if (key === 'C') this.reset()
+  }
+
+  calculate (): void {
+    let result = eval(this.expression)
+    this.buffer = `${ this.expression }=${ result }`
+    this.expression = ''
+  }
+
+  reset (): void {
+    this.buffer = this.expression = ''
   }
 }
