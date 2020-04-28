@@ -15,6 +15,7 @@ export default class Calculator extends VueComponent<Props> {
 
   buffer: string = ''
   expression: string = ''
+  pending: boolean = false
 
   render () {
     return (
@@ -73,9 +74,14 @@ export default class Calculator extends VueComponent<Props> {
   }
 
   calculate (): void {
-    let result: string = eval(this.expression)
-    this.buffer = `${ this.expression }=${ result }`
-    this.expression = ''
+    this.pending = true
+    setTimeout(() => {
+      let result: string = eval(this.expression)
+      this.buffer = `${ this.expression }=${ result }`
+      this.expression = ''
+      this.pending = false
+    }, 2000)
+
   }
 
   reset (): void {
