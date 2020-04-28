@@ -31,12 +31,12 @@ export default class Calculator extends VueComponent<Props> {
                  v-model={ this.expression }
                  class={ [styles['calculator-screen'], styles['calculator-screen__output']] }/>
 
-          <div class={ [styles['calculator-keys'], { [styles.pending]: this.pending } ] }>
+          <div class={ [styles['calculator-keys'], { [styles.pending]: this.pending }] }>
 
             <button onclick={ this.press }>7</button>
             <button onclick={ this.press }>8</button>
             <button onclick={ this.press }>9</button>
-            <button onclick={ this.press } class={ styles['button--brown'] }>C</button>
+            <button onclick={ this.reset } class={ styles['button--brown'] }>C</button>
 
             <button onclick={ this.press }>4</button>
             <button onclick={ this.press }>5</button>
@@ -49,7 +49,7 @@ export default class Calculator extends VueComponent<Props> {
             <button onclick={ this.press } class={ styles['button--brown'] }>+</button>
 
             <button onclick={ this.press } class={ styles['button--wide'] }>0</button>
-            <button onclick={ this.press } class={ styles['button--brown'] }>=</button>
+            <button onclick={ this.calculate } class={ styles['button--brown'] }>=</button>
 
           </div>
         </div>
@@ -67,10 +67,7 @@ export default class Calculator extends VueComponent<Props> {
   press (e: object): void {
     // @ts-ignore
     let key: string = e.target.innerText
-
-    if (key != '=' && key != 'C') this.expression += key
-    if (key === '=') this.calculate()
-    if (key === 'C') this.reset()
+    this.expression += ~['=', 'C'].indexOf(key) ? '' : key
   }
 
   calculate (): void {
@@ -81,7 +78,6 @@ export default class Calculator extends VueComponent<Props> {
       this.expression = ''
       this.pending = false
     }, 2000)
-
   }
 
   reset (): void {
