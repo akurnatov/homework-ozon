@@ -34,11 +34,15 @@ h1 {
 }
 
 .calculator-screen__buffer {
-
+    font-size: 1.125rem;
 }
 
 .calculator-screen__output {
+    font-size: 1.25rem;
+}
 
+::placeholder {
+    color: #fff;
 }
 
 .calculator-keys {
