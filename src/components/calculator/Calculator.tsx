@@ -35,20 +35,20 @@ export default class Calculator extends VueComponent<Props> {
             <button onclick={ this.press }>7</button>
             <button onclick={ this.press }>8</button>
             <button onclick={ this.press }>9</button>
-            <button onclick={ this.press } class={ [styles['button--brown'], styles['reset']] } value="all-clear">C</button>
+            <button onclick={ this.press } class={ styles['button--brown'] }>C</button>
 
             <button onclick={ this.press }>4</button>
             <button onclick={ this.press }>5</button>
             <button onclick={ this.press }>6</button>
-            <button onclick={ this.press } class={ styles['button--brown'] } value="-">-</button>
+            <button onclick={ this.press } class={ styles['button--brown'] }>-</button>
 
             <button onclick={ this.press }>1</button>
             <button onclick={ this.press }>2</button>
             <button onclick={ this.press }>3</button>
-            <button onclick={ this.press } class={ styles['button--brown'] } value="+">+</button>
+            <button onclick={ this.press } class={ styles['button--brown'] }>+</button>
 
-            <button onclick={ this.press } class={ styles['zero'] } value="0">0</button>
-            <button onclick={ this.press } class={ styles['button--brown'] } value="=">=</button>
+            <button onclick={ this.press } class={ styles['button--wide'] }>0</button>
+            <button onclick={ this.press } class={ styles['button--brown'] }>=</button>
 
           </div>
         </div>
@@ -56,14 +56,15 @@ export default class Calculator extends VueComponent<Props> {
     )
   }
 
-  created () {
+  created (): void {
     window.addEventListener('keyup', e => {
       if (e.key === '=') this.calculate()
       if (e.key === 'c') this.reset()
     })
   }
 
-  press (e: object) {
+  press (e: object): void {
+    // @ts-ignore
     let key: string = e.target.innerText
 
     if (key != '=' && key != 'C') this.expression += key
@@ -72,7 +73,7 @@ export default class Calculator extends VueComponent<Props> {
   }
 
   calculate (): void {
-    let result = eval(this.expression)
+    let result: string = eval(this.expression)
     this.buffer = `${ this.expression }=${ result }`
     this.expression = ''
   }
