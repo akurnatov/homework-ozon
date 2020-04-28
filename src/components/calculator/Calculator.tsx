@@ -31,7 +31,7 @@ export default class Calculator extends VueComponent<Props> {
                  v-model={ this.expression }
                  class={ [styles['calculator-screen'], styles['calculator-screen__output']] }/>
 
-          <div class={ styles['calculator-keys'] }>
+          <div class={ [styles['calculator-keys'], { [styles.pending]: this.pending } ] }>
 
             <button onclick={ this.press }>7</button>
             <button onclick={ this.press }>8</button>
